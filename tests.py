@@ -16,7 +16,6 @@ def test_create_task():
   assert "id" in response_json
   tasks.append(response_json["id"])
 
-
 def test_get_tasks():
   response = requests.get(f"{BASE_URL}/tasks")
   assert response.status_code == 200
@@ -31,3 +30,16 @@ def test_get_task():
     assert response.status_code == 200
     response_json = response.json()
     assert tasks_id == response_json["id"]
+
+def test_update_task():
+  if tasks:
+    tasks_id = tasks[0]
+    payload = {
+      "title": "nova atualização",
+      "description": "nova descrição",
+      "completed": True
+    }
+    response = requests.put(f"{BASE_URL}/tasks/{tasks_id}", json=payload)
+    assert response.status_code == 200
+    response_json = response.json()
+    assert "message" in response_json
